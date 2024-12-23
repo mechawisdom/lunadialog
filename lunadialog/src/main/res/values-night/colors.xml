@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black_background_color">#B0FFFFFF</color>
+    <color name="white_background_color">#B0000000</color>
+    <color name="dark_grey_background_color">#B0C4C4C4</color>
+    <color name="space_grey_background_color">#B02E2E2E</color>
+
+    <color name="line_color_1">#000000</color>
+    <color name="line_color_2">#0d0d0c</color>
+    <color name="line_color_3">#1a1a19</color>
+    <color name="line_color_4">#212121</color>
+    <color name="line_color_5">#272726</color>
+    <color name="line_color_6">#E6343432</color>
+    <color name="line_color_7">#CC40403F</color>
+    <color name="line_color_8">#B34D4D4C</color>
+    <color name="line_color_9">#99666666</color>
+    <color name="line_color_10">#80737373</color>
+</resources>
