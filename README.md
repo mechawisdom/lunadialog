@@ -24,6 +24,9 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
+    // Kotlin DSL 
+    implementation("com.github.mechawisdom:lunadialog:1.0.0")
+    // Groovy DSL
     implementation 'com.github.mechawisdom:lunadialog:1.0.0'
 }
 ```
@@ -107,6 +110,9 @@ Projenizin `build.gradle` dosyasına aşağıdaki bağımlılığı ekleyin:
 
 ```
 dependencies {
+    // Kotlin DSL 
+    implementation("com.github.mechawisdom:lunadialog:1.0.0")
+    // Groovy DSL
     implementation 'com.github.mechawisdom:lunadialog:1.0.0'
 }
 ```
