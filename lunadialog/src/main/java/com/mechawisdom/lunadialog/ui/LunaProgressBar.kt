@@ -7,17 +7,18 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
-import android.util.TypedValue
 import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
 import com.mechawisdom.lunadialog.library.R
 import com.mechawisdom.lunadialog.library.databinding.DialogLunaProgressBarBinding
-import com.mechawisdom.lunadialog.utils.DialogAnimationStyle
+import com.mechawisdom.lunadialog.utils.AnimationStyle
 import com.mechawisdom.lunadialog.utils.OrientationType
 import com.mechawisdom.lunadialog.utils.ProgressDrawable
+import com.mechawisdom.lunadialog.utils.dpToPx
+import com.mechawisdom.lunadialog.utils.sdpToPx
+import com.mechawisdom.lunadialog.utils.updatePadding
+import com.mechawisdom.lunadialog.utils.updatePaddingSDP
 
 
 class LunaProgressBar(activity: Activity) : Dialog(activity) {
@@ -30,6 +31,7 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
     private var backgroundStrokeColor: Int = Color.TRANSPARENT
     private var backgroundStrokeWidth: Int = 0
     private var delayInMillis: Long = 0L
+    private var startAnimation: Boolean = true
     private var backgroundDrawable: GradientDrawable = GradientDrawable()
 
     init {
@@ -46,7 +48,6 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
         binding.progressBackground.background = backgroundDrawable
     }
 
-
     companion object {
         @Volatile
         private var instance: LunaProgressBar? = null
@@ -61,14 +62,8 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
     override fun show() {
         if (!isShowing) {
             super.show()
-            if (delayInMillis == 0L) {
-                startRotatingAnimation()
-            } else {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if (isShowing) {
-                        startRotatingAnimation()
-                    }
-                }, delayInMillis)
+            if (startAnimation) {
+                startImageViewAnimation()
             }
         }
     }
@@ -77,6 +72,9 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
         if (isShowing) {
             super.dismiss()
             instance = null
+            if (startAnimation) {
+                stopRotatingAnimation()
+            }
         }
     }
 
@@ -87,8 +85,8 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
     ): LunaProgressBar {
         window?.attributes?.let {
             it.gravity = gravity
-            it.x = xOffsetDP.dpToPx()
-            it.y = yOffsetDP.dpToPx()
+            it.x = xOffsetDP.dpToPx(context)
+            it.y = yOffsetDP.dpToPx(context)
             window?.attributes = it
         }
         return this
@@ -101,123 +99,34 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
     ): LunaProgressBar {
         window?.attributes?.let {
             it.gravity = gravity
-            it.x = xOffsetSDP.sdpToPx()
-            it.y = yOffsetSDP.sdpToPx()
+            it.x = xOffsetSDP.sdpToPx(context)
+            it.y = yOffsetSDP.sdpToPx(context)
             window?.attributes = it
         }
         return this
     }
 
-    private fun Int.dpToPx(): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            this.toFloat(),
-            context.resources.displayMetrics
-        ).toInt()
-    }
 
-    private fun Int.sdpToPx(): Int {
-        return context.resources.getDimension(this).toInt()
-    }
-
-    private fun updateLayoutParams(
-        view: View,
-        margin: Int? = null,
-        left: Int? = null,
-        top: Int? = null,
-        right: Int? = null,
-        bottom: Int? = null
-    ) {
-        val params = view.layoutParams as? ViewGroup.MarginLayoutParams ?: return
-
-        margin?.let {
-            val marginPx = it.dpToPx()
-            params.setMargins(marginPx, marginPx, marginPx, marginPx)
-        }
-
-        if (left != null || top != null || right != null || bottom != null) {
-            params.setMargins(
-                left?.dpToPx() ?: params.leftMargin,
-                top?.dpToPx() ?: params.topMargin,
-                right?.dpToPx() ?: params.rightMargin,
-                bottom?.dpToPx() ?: params.bottomMargin
-            )
-        }
-
-        view.layoutParams = params
-    }
-
-    private fun updateLayoutParamsSDP(
-        view: View,
-        margin: Int? = null,
-        left: Int? = null,
-        top: Int? = null,
-        right: Int? = null,
-        bottom: Int? = null
-    ) {
-        val params = view.layoutParams as? ViewGroup.MarginLayoutParams ?: return
-
-        margin?.let {
-            val marginPx = it.sdpToPx()
-            params.setMargins(marginPx, marginPx, marginPx, marginPx)
-        }
-
-        if (left != null || top != null || right != null || bottom != null) {
-            params.setMargins(
-                left?.sdpToPx() ?: params.leftMargin,
-                top?.sdpToPx() ?: params.topMargin,
-                right?.sdpToPx() ?: params.rightMargin,
-                bottom?.sdpToPx() ?: params.bottomMargin
-            )
-        }
-
-        view.layoutParams = params
-    }
-
-    private fun updatePadding(
-        view: View,
-        padding: Int? = null,
-        left: Int? = null,
-        top: Int? = null,
-        right: Int? = null,
-        bottom: Int? = null
-    ) {
-        if (padding != null) {
-            val paddingPx = padding.dpToPx()
-            view.setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
+    private fun startImageViewAnimation() {
+        if (delayInMillis == 0L) {
+            startRotatingAnimation()
         } else {
-            view.setPadding(
-                left?.dpToPx() ?: view.paddingLeft,
-                top?.dpToPx() ?: view.paddingTop,
-                right?.dpToPx() ?: view.paddingRight,
-                bottom?.dpToPx() ?: view.paddingBottom
-            )
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (isShowing) {
+                    startRotatingAnimation()
+                }
+            }, delayInMillis)
         }
     }
 
-    private fun updatePaddingSDP(
-        view: View,
-        padding: Int? = null,
-        left: Int? = null,
-        top: Int? = null,
-        right: Int? = null,
-        bottom: Int? = null
-    ) {
-        if (padding != null) {
-            val paddingPx = padding.sdpToPx()
-            view.setPadding(paddingPx, paddingPx, paddingPx, paddingPx)
-        } else {
-            view.setPadding(
-                left?.sdpToPx() ?: view.paddingLeft,
-                top?.sdpToPx() ?: view.paddingTop,
-                right?.sdpToPx() ?: view.paddingRight,
-                bottom?.sdpToPx() ?: view.paddingBottom
-            )
-        }
-    }
 
-    fun setAnimationStyle(animationStyle: DialogAnimationStyle): LunaProgressBar {
+    fun setAnimationStyle(animationStyle: AnimationStyle): LunaProgressBar {
         window?.setWindowAnimations(animationStyle.styleRes)
+        return this
+    }
+
+    fun setCustomAnimationStyle(animationStyle: Int): LunaProgressBar {
+        window?.setWindowAnimations(animationStyle)
         return this
     }
 
@@ -242,38 +151,40 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
         return this
     }
 
+    fun setAnimationStart(animation: Boolean): LunaProgressBar {
+        startAnimation = animation
+        return this
+    }
+
+
     fun setCancelableOption(isCancelable: Boolean): LunaProgressBar {
         setCancelable(isCancelable)
         return this
     }
 
-    fun setProgressDrawable(drawable: Any): LunaProgressBar {
-        when (drawable) {
-            is ProgressDrawable -> {
-                binding.progressImage.setImageResource(drawable.drawableRes)
-            }
+    fun setProgressDrawable(drawable: ProgressDrawable): LunaProgressBar {
+        binding.progressImage.setImageResource(drawable.drawableRes)
+        return this
+    }
 
-            is Int -> {
-                binding.progressImage.setImageResource(drawable)
-            }
-        }
+    fun setCustomDrawable(drawable: Int): LunaProgressBar {
+        binding.progressImage.setImageResource(drawable)
         return this
     }
 
     fun setProgressImageSize(widthDp: Int, heightDp: Int): LunaProgressBar {
-        val widthPx = widthDp.dpToPx()
-        val heightPx = heightDp.dpToPx()
+        val widthPx = widthDp.dpToPx(context)
+        val heightPx = heightDp.dpToPx(context)
         val layoutParams = binding.progressImage.layoutParams
         layoutParams.width = widthPx
         layoutParams.height = heightPx
         binding.progressImage.layoutParams = layoutParams
-
         return this
     }
 
     fun setProgressImageSizeSDP(widthSDP: Int, heightSDP: Int): LunaProgressBar {
-        val widthPx = widthSDP.sdpToPx()
-        val heightPx = heightSDP.sdpToPx()
+        val widthPx = widthSDP.sdpToPx(context)
+        val heightPx = heightSDP.sdpToPx(context)
         val layoutParams = binding.progressImage.layoutParams
         layoutParams.width = widthPx
         layoutParams.height = heightPx
@@ -297,22 +208,23 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
     }
 
     fun setContainerCornerRadius(cornerRadius: Int): LunaProgressBar {
-        backgroundDrawable.cornerRadius = getPxFromDp(cornerRadius).toFloat()
+        backgroundDrawable.cornerRadius = cornerRadius.dpToPx(context).toFloat()
         return this
     }
 
     fun setContainerCornerRadiusSDP(cornerRadius: Int): LunaProgressBar {
-        backgroundDrawable.cornerRadius = context.resources.getDimension(cornerRadius)
+        backgroundDrawable.cornerRadius = cornerRadius.sdpToPx(context).toFloat()
         return this
     }
 
     fun setContainerPadding(padding: Int): LunaProgressBar {
-        updatePadding(binding.progressBackground, padding = padding)
+        updatePadding(context, binding.progressBackground, padding = padding)
         return this
     }
 
     fun setContainerPadding(left: Int, top: Int, right: Int, bottom: Int): LunaProgressBar {
         updatePadding(
+            context,
             binding.progressBackground,
             left = left,
             top = top,
@@ -324,12 +236,13 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
 
 
     fun setContainerPaddingSDP(padding: Int): LunaProgressBar {
-        updatePaddingSDP(binding.progressBackground, padding = padding)
+        updatePaddingSDP(context, binding.progressBackground, padding = padding)
         return this
     }
 
     fun setContainerPaddingSDP(left: Int, top: Int, right: Int, bottom: Int): LunaProgressBar {
         updatePaddingSDP(
+            context,
             binding.progressBackground,
             left = left,
             top = top,
@@ -340,13 +253,13 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
     }
 
     fun setContainerStrokeWidth(strokeWidth: Int): LunaProgressBar {
-        backgroundStrokeWidth = strokeWidth.dpToPx()
+        backgroundStrokeWidth = strokeWidth.dpToPx(context)
         backgroundDrawable.setStroke(backgroundStrokeWidth, backgroundStrokeColor)
         return this
     }
 
     fun setContainerStrokeWidthSDP(strokeWidth: Int): LunaProgressBar {
-        backgroundStrokeWidth = strokeWidth.sdpToPx()
+        backgroundStrokeWidth = strokeWidth.sdpToPx(context)
         backgroundDrawable.setStroke(backgroundStrokeWidth, backgroundStrokeColor)
         return this
     }
@@ -360,15 +273,6 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
     fun setContainerBackgroundColor(backgroundColor: Int): LunaProgressBar {
         backgroundDrawable.setColor(backgroundColor)
         return this
-    }
-
-
-    private fun getPxFromDp(dp: Int): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            context.resources.displayMetrics
-        ).toInt()
     }
 
     fun setAnimationFPS(fps: Int): LunaProgressBar {
@@ -395,6 +299,7 @@ class LunaProgressBar(activity: Activity) : Dialog(activity) {
             }
         }
         binding.progressImage.post(updateViewRunnable)
+
     }
 
     private fun stopRotatingAnimation() {

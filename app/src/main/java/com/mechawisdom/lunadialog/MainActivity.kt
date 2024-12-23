@@ -11,7 +11,8 @@ import androidx.core.content.ContextCompat
 import com.mechawisdom.lunadialog.databinding.ActivityMainBinding
 import com.mechawisdom.lunadialog.ui.LunaProgressDialog
 import com.mechawisdom.lunadialog.utils.AnimationType
-import com.mechawisdom.lunadialog.utils.DialogAnimationStyle
+import com.mechawisdom.lunadialog.utils.AnimationStyle
+import com.mechawisdom.lunadialog.utils.ContainerColor
 import com.mechawisdom.lunadialog.utils.OrientationType
 import com.mechawisdom.lunadialog.utils.ProgressDrawable
 
@@ -25,15 +26,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         lunaProgressDialog = LunaProgressDialog.Builder(this)
             .setTitleText("Title")
-            .setDescriptionText("This is desc")
+            .setDescriptionText("This is a desc")
             .setCancelableOption(true)
             .setContainerOrientation(OrientationType.VERTICAL)
             .setAnimationType(AnimationType.IMAGEVIEW)
             .setAnimationDelay(200L)
-            .setAnimationStyle(DialogAnimationStyle.NORMAL)
-            .setAnimationStart(false)
+            .setAnimationStyle(AnimationStyle.ZOOM_NORMAL)
+            .setAnimationStart(true)
             .setProgressDrawable(ProgressDrawable.DOT_PROGRESS)
             .setProgressScaleType(ImageView.ScaleType.CENTER_CROP)
             .setTitleTextColor(Color.GREEN)
@@ -46,17 +48,12 @@ class MainActivity : AppCompatActivity() {
             .setTitleTextSize(14)
             .setTextContainerMargin(0, 0, 0, 0)
             .setTextContainerGravity(Gravity.CENTER)
-            .setContainerPositionGravity(Gravity.CENTER, 56, 0)
+            .setContainerPositionGravity(Gravity.CENTER, 0, 0)
             .setContainerBackgroundShape(GradientDrawable.RECTANGLE)
             .setContainerDimAmount(0.1f)
             .setContainerCornerRadius(16)
             .setContainerPadding(12)
-            .setContainerBackgroundColor(
-                ContextCompat.getColor(
-                    applicationContext,
-                    R.color.kprogresshud_default_color
-                )
-            )
+            .setContainerBackgroundColor(ContainerColor.BLACK.COLOR(applicationContext))
             .build()
 
 

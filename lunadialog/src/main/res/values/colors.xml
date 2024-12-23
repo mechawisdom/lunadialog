@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
-    <color name="kprogresshud_default_color">#b1000000</color>
-    <color name="kprogresshud_grey_color">#449E9E9E</color>
+    <color name="black_background_color">#B1000000</color>
+    <color name="white_background_color">#B1FFFFFF</color>
+    <color name="dark_grey_background_color">#B13A3A3A</color>
+    <color name="space_grey_background_color">#B1D2D2D2</color>
 
     <color name="line_color_1">#FFFFFF</color>
     <color name="line_color_2">#F3F3F2</color>
     <color name="line_color_3">#E5E5E4</color>
-    <color name="line_color_4">#E5E5E4</color>
+    <color name="line_color_4">#DDDDDD</color>
     <color name="line_color_5">#D9D9D8</color>
     <color name="line_color_6">#E6CCCCCB</color>
     <color name="line_color_7">#CCBFBFBE</color>

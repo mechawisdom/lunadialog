@@ -16,8 +16,8 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.mechawisdom.lunadialog.library.R
 import com.mechawisdom.lunadialog.library.databinding.DialogLunaProgressDialogBinding
+import com.mechawisdom.lunadialog.utils.AnimationStyle
 import com.mechawisdom.lunadialog.utils.AnimationType
-import com.mechawisdom.lunadialog.utils.DialogAnimationStyle
 import com.mechawisdom.lunadialog.utils.OrientationType
 import com.mechawisdom.lunadialog.utils.ProgressDrawable
 import com.mechawisdom.lunadialog.utils.dpToPx
@@ -59,7 +59,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
         binding.progressBackground.background = backgroundDrawable
     }
 
-
     companion object {
         @Volatile
         private var instance: LunaProgressDialog? = null
@@ -69,10 +68,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
                 instance ?: LunaProgressDialog(activity).also { instance = it }
             }
         }
-    }
-
-    override fun setContentView(view: View) {
-        super.setContentView(view)
     }
 
     override fun show() {
@@ -173,8 +168,13 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
     }
 
 
-    fun setAnimationStyle(animationStyle: DialogAnimationStyle): LunaProgressDialog {
+    fun setAnimationStyle(animationStyle: AnimationStyle): LunaProgressDialog {
         window?.setWindowAnimations(animationStyle.styleRes)
+        return this
+    }
+
+    fun setCustomAnimationStyle(animationStyle: Int): LunaProgressDialog {
+        window?.setWindowAnimations(animationStyle)
         return this
     }
 
@@ -186,12 +186,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
         }
         window?.attributes?.dimAmount = validDimAmount
         window?.attributes = window?.attributes
-        return this
-    }
-
-
-    fun setTitleText(title: String): LunaProgressDialog {
-        titleText = title
         return this
     }
 
@@ -207,6 +201,12 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
 
     fun setAnimationStart(animation: Boolean): LunaProgressDialog {
         startAnimation = animation
+        return this
+    }
+
+
+    fun setTitleText(title: String): LunaProgressDialog {
+        titleText = title
         return this
     }
 
@@ -298,12 +298,12 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
     }
 
     fun setContainerCornerRadius(cornerRadius: Int): LunaProgressDialog {
-        backgroundDrawable.cornerRadius = getPxFromDp(cornerRadius).toFloat()
+        backgroundDrawable.cornerRadius = cornerRadius.dpToPx(context).toFloat()
         return this
     }
 
     fun setContainerCornerRadiusSDP(cornerRadius: Int): LunaProgressDialog {
-        backgroundDrawable.cornerRadius = context.resources.getDimension(cornerRadius)
+        backgroundDrawable.cornerRadius = cornerRadius.sdpToPx(context).toFloat()
         return this
     }
 
@@ -366,8 +366,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
     }
 
 
-    // TEXT container
-
     fun setTextContainerGravity(gravity: Int): LunaProgressDialog {
         binding.textViewContainer.gravity = gravity
         return this
@@ -411,7 +409,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
         )
         return this
     }
-    //
 
     fun setTextContainerPadding(padding: Int): LunaProgressDialog {
         updatePadding(context, binding.textViewContainer, padding = padding)
@@ -452,7 +449,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
         return this
     }
 
-    //Title
     fun setTitleTextColor(textColor: Int): LunaProgressDialog {
         binding.titleTextView.setTextColor(textColor)
         return this
@@ -550,9 +546,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
         )
         return this
     }
-
-
-    // DESC
 
     fun setDescriptionTextColor(textColor: Int): LunaProgressDialog {
         binding.descriptionTextView.setTextColor(textColor)
@@ -653,15 +646,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
         return this
     }
 
-
-    private fun getPxFromDp(dp: Int): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            context.resources.displayMetrics
-        ).toInt()
-    }
-
     fun setAnimationFPS(fps: Int): LunaProgressDialog {
         frameTime = if (fps in 1..90) {
             1000 / fps
@@ -672,16 +656,6 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
     }
 
     private fun startRotatingAnimation() {
-        /*
-        val rotationAnimation = ObjectAnimator.ofFloat(binding.progressImage, "rotation", 0f, 360f).apply {
-            duration = 1000 // 1 saniyede bir tur
-            repeatCount = ObjectAnimator.INFINITE
-            interpolator = LinearInterpolator() // Düzgün hızda döndürme
-        }
-        rotationAnimation.start()
-*/
-
-
         var rotateDegrees = 0f
         needToUpdateView = true
 
@@ -708,8 +682,8 @@ class LunaProgressDialog(activity: Activity) : Dialog(activity) {
     }
 
 
-    private fun setLottieAnimationRepeatCount(count:Int) {
-        lottieRepeatCount=count
+    private fun setLottieAnimationRepeatCount(count: Int) {
+        lottieRepeatCount = count
     }
 
     private fun startLottieAnimation() {

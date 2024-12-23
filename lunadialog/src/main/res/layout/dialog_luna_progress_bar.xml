@@ -15,6 +15,6 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center"
-        android:src="@drawable/drop_spinner"
+        android:src="@drawable/drop_progress"
         tools:ignore="ContentDescription" />
 </LinearLayout>

@@ -2,24 +2,62 @@
 <resources>
 
     <style name="DialogZoomAnimation_Normal">
-        <item name="android:windowEnterAnimation">@anim/overshot</item>
-        <item name="android:windowExitAnimation">@anim/zoom_out</item>
+        <item name="android:windowEnterAnimation">@anim/zoom_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/zoom_exit_anim</item>
+    </style>
+
+    <style name="DialogZoomAnimation_Fast">
+        <item name="android:windowEnterAnimation">@anim/zoom_enter_short_anim</item>
+        <item name="android:windowExitAnimation">@anim/zoom_exit_short_anim</item>
     </style>
 
     <style name="DialogZoomAnimation_Slow">
-        <item name="android:windowEnterAnimation">@anim/zoom_in_long</item>
-        <item name="android:windowExitAnimation">@anim/zoom_out_long</item>
+        <item name="android:windowEnterAnimation">@anim/zoom_enter_long_anim</item>
+        <item name="android:windowExitAnimation">@anim/zoom_exit_long_anim</item>
+    </style>
+
+    <style name="DialogSlideUpAnimation">
+        <item name="android:windowEnterAnimation">@anim/bottom_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/bottom_exit_anim</item>
     </style>
 
 
-    <style name="DialogZoomAnimation_Fast">
-        <item name="android:windowEnterAnimation">@anim/zoom_in_short</item>
-        <item name="android:windowExitAnimation">@anim/zoom_out_short</item>
+    <style name="DialogSlideDownAnimation">
+        <item name="android:windowEnterAnimation">@anim/top_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/top_exit_anim</item>
+    </style>
+
+    <style name="DialogSlideLeftAnimation">
+        <item name="android:windowEnterAnimation">@anim/left_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/left_exit_anim</item>
     </style>
 
 
-    <style name="DialogSlideInUpAnimation">
-        <item name="android:windowEnterAnimation">@anim/slide_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    <style name="DialogSlideRightAnimation">
+        <item name="android:windowEnterAnimation">@anim/right_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/right_exit_anim</item>
+    </style>
+
+
+    <style name="DialogOvershootAnimation">
+        <item name="android:windowEnterAnimation">@anim/overshot_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/zoom_exit_short_anim</item>
+    </style>
+
+
+    <style name="DialogBounceAnimation">
+        <item name="android:windowEnterAnimation">@anim/bounce_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/zoom_exit_short_anim</item>
+    </style>
+
+    <style name="DialogShakeAnimation">
+        <item name="android:windowEnterAnimation">@anim/shake_anim</item>
+        <item name="android:windowExitAnimation">@anim/zoom_exit_short_anim</item>
+    </style>
+
+
+    <style name="DialogAlphaAnimation">
+        <item name="android:windowEnterAnimation">@anim/alpha_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/alpha_exit_anim</item>
     </style>
 </resources>
