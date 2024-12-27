@@ -1,5 +1,7 @@
-![Screenshot_20241223_181137_LunaDialog](https://github.com/user-attachments/assets/80741b23-9187-49c1-9bc3-54bd4d4ce8a5)
-![Screenshot_20241223_181126_LunaDialog](https://github.com/user-attachments/assets/e520c182-26b8-4783-acef-d4a06b2a74b6)
+
+![MixCollage-27-Dec-2024-07-16-PM-2413](https://github.com/user-attachments/assets/d29db299-883e-44f6-b93c-ef721a949dae)
+
+
 # LunaDialog (ENGLISH)
 
 
