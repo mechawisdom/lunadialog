@@ -1,4 +1,7 @@
+![Screenshot_20241223_181137_LunaDialog](https://github.com/user-attachments/assets/80741b23-9187-49c1-9bc3-54bd4d4ce8a5)
+![Screenshot_20241223_181126_LunaDialog](https://github.com/user-attachments/assets/e520c182-26b8-4783-acef-d4a06b2a74b6)
 # LunaDialog (ENGLISH)
+
 
 LunaDialog is a simple and elegant dialog box library for Android.
 
